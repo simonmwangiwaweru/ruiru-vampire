@@ -1,7 +1,67 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const pathRef = useRef<SVGPathElement>(null);
+  const ballRef = useRef<SVGCircleElement>(null);
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    const path = pathRef.current;
+    const ball = ballRef.current;
+    if (!path || !ball) return;
+
+    const pathLength = path.getTotalLength();
+
+    if (reduceMotion) {
+      const mid = path.getPointAtLength(pathLength * 0.5);
+      ball.setAttribute("cx", String(mid.x));
+      ball.setAttribute("cy", String(mid.y));
+      return;
+    }
+
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+      const section = sectionRef.current;
+      if (!section) return;
+
+      const rect = section.getBoundingClientRect();
+      const progress = clamp(-rect.top / (rect.height - window.innerHeight * 0.4), 0, 1);
+
+      const point = path.getPointAtLength(pathLength * progress);
+      ball.setAttribute("cx", String(point.x));
+      ball.setAttribute("cy", String(point.y));
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
   return (
-    <section className="relative w-full overflow-hidden bg-chalk">
-      <GitothuaStreetscape />
+    <section
+      ref={sectionRef}
+      className="relative w-full overflow-hidden bg-chalk"
+    >
+      <GitothuaStreetscape pathRef={pathRef} ballRef={ballRef} />
 
       <div className="relative mx-auto flex w-full max-w-[1200px] flex-col items-center px-6 pt-[60px] pb-[240px] text-center md:px-10 md:pb-[300px]">
         <span className="mb-[20px] rounded-full border border-graphite/30 px-3 py-[3px] text-[12px] font-medium text-carbon">
@@ -36,12 +96,25 @@ export function Hero() {
         <p className="mt-[36px] text-caption text-carbon/50">
           Real injuries. Real fear. Everything after that: internet folklore.
         </p>
+        <p className="mt-[8px] text-caption text-carbon/40">
+          Scroll — follow the sighting through Gitothua.
+        </p>
       </div>
     </section>
   );
 }
 
-function GitothuaStreetscape() {
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function GitothuaStreetscape({
+  pathRef,
+  ballRef,
+}: {
+  pathRef: React.RefObject<SVGPathElement | null>;
+  ballRef: React.RefObject<SVGCircleElement | null>;
+}) {
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[200px] w-full md:h-[260px]">
       <svg
@@ -55,8 +128,8 @@ function GitothuaStreetscape() {
             <stop offset="0%" stopColor="#e2e8f0" stopOpacity="0" />
             <stop offset="100%" stopColor="#c1c5c8" stopOpacity="0.9" />
           </linearGradient>
-          <filter id="glow" x="-200%" y="-200%" width="500%" height="500%">
-            <feGaussianBlur stdDeviation="6" result="blur" />
+          <filter id="glow" x="-300%" y="-300%" width="700%" height="700%">
+            <feGaussianBlur stdDeviation="7" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
@@ -93,14 +166,19 @@ function GitothuaStreetscape() {
           <rect x="730" y="100" width="14" height="18" />
         </g>
 
-        <rect
-          x="614"
-          y="126"
-          width="16"
-          height="20"
-          fill="#22c550"
-          filter="url(#glow)"
+        {/* The vampire's path through Gitothua — the single moving accent */}
+        <path
+          ref={pathRef}
+          d="M 20,232 C 140,200 230,250 360,224 S 560,190 660,230 S 900,252 1000,214 S 1140,190 1180,220"
+          fill="none"
+          stroke="#89898d"
+          strokeOpacity="0.35"
+          strokeWidth="2"
+          strokeDasharray="2 8"
+          strokeLinecap="round"
         />
+
+        <circle ref={ballRef} r="9" fill="#22c550" filter="url(#glow)" />
 
         <rect x="0" y="190" width="1200" height="70" fill="url(#fog)" />
       </svg>
