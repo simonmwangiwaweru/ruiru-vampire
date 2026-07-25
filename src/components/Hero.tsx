@@ -4,6 +4,19 @@ import { RecIndicator } from "@/components/RecIndicator";
 export function Hero() {
   return (
     <section className="relative h-[100svh] min-h-[560px] w-full overflow-hidden bg-obsidian">
+      <link
+        rel="preload"
+        as="fetch"
+        href="/models/man_comp-transformed.glb"
+        crossOrigin="anonymous"
+      />
+      <link
+        rel="preload"
+        as="fetch"
+        href="/models/skeleton_comp-transformed.glb"
+        crossOrigin="anonymous"
+      />
+
       <div className="absolute inset-0">
         <ThreeSkullHero />
       </div>
