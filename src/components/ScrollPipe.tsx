@@ -2,17 +2,17 @@
 
 import { useEffect, useRef } from "react";
 
-const THREAD_D =
-  "M50,0 C20,70 80,140 50,210 S20,350 50,420 S80,560 50,630 S20,770 50,840 S80,930 50,1000";
+const PIPE_D =
+  "M50,0 C15,110 85,170 50,280 S15,440 50,550 S85,700 50,810 S15,930 50,1000";
 
-export function ScrollSpider() {
+export function ScrollPipe() {
   const pathRef = useRef<SVGPathElement>(null);
-  const spiderRef = useRef<SVGGElement>(null);
+  const ballRef = useRef<SVGCircleElement>(null);
 
   useEffect(() => {
     const path = pathRef.current;
-    const spider = spiderRef.current;
-    if (!path || !spider) return;
+    const ball = ballRef.current;
+    if (!path || !ball) return;
 
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -23,15 +23,8 @@ export function ScrollSpider() {
     const place = (progress: number) => {
       const p = clamp(progress, 0, 1);
       const point = path.getPointAtLength(pathLength * p);
-      const ahead = path.getPointAtLength(
-        Math.min(pathLength, pathLength * p + 1)
-      );
-      const angle =
-        (Math.atan2(ahead.y - point.y, ahead.x - point.x) * 180) / Math.PI;
-      spider.setAttribute(
-        "transform",
-        `translate(${point.x} ${point.y}) rotate(${angle + 90})`
-      );
+      ball.setAttribute("cx", String(point.x));
+      ball.setAttribute("cy", String(point.y));
     };
 
     if (reduceMotion) {
@@ -43,8 +36,7 @@ export function ScrollSpider() {
 
     const update = () => {
       ticking = false;
-      const max =
-        document.documentElement.scrollHeight - window.innerHeight;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
       const progress = max > 0 ? window.scrollY / max : 0;
       place(progress);
     };
@@ -66,7 +58,7 @@ export function ScrollSpider() {
   }, []);
 
   return (
-    <div className="pointer-events-none fixed top-14 bottom-0 right-1 z-20 w-[60px] md:right-4 md:w-[80px]">
+    <div className="pointer-events-none fixed top-14 bottom-0 right-1 z-20 w-[60px] md:right-6 md:w-[90px]">
       <svg
         viewBox="0 0 100 1000"
         preserveAspectRatio="none"
@@ -74,7 +66,7 @@ export function ScrollSpider() {
         aria-hidden="true"
       >
         <defs>
-          <filter id="spider-glow" x="-300%" y="-300%" width="700%" height="700%">
+          <filter id="pipe-glow" x="-300%" y="-300%" width="700%" height="700%">
             <feGaussianBlur stdDeviation="3" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
@@ -83,54 +75,40 @@ export function ScrollSpider() {
           </filter>
         </defs>
 
+        {/* invisible geometry path used purely for measuring position */}
+        <path ref={pathRef} d={PIPE_D} fill="none" stroke="none" />
+
+        {/* the pipe body */}
         <path
-          ref={pathRef}
-          d={THREAD_D}
+          d={PIPE_D}
           fill="none"
           stroke="#89898d"
-          strokeWidth="1"
-          strokeDasharray="1 5"
-          opacity="0.45"
+          strokeWidth="16"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          opacity="0.9"
+          vectorEffect="non-scaling-stroke"
+        />
+        <path
+          d={PIPE_D}
+          fill="none"
+          stroke="#dddddd"
+          strokeWidth="11"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           vectorEffect="non-scaling-stroke"
         />
 
-        <g ref={spiderRef} filter="url(#spider-glow)">
-          <Spider />
+        {/* elbow joints where the pipe bends */}
+        <g fill="#c1c5c8" stroke="#89898d" strokeWidth="1.5">
+          <circle cx="50" cy="280" r="9" />
+          <circle cx="50" cy="550" r="9" />
+          <circle cx="50" cy="810" r="9" />
         </g>
+
+        <circle ref={ballRef} r="7" fill="#22c550" filter="url(#pipe-glow)" />
       </svg>
     </div>
-  );
-}
-
-function Spider() {
-  const legs = [
-    "M0,-2 L-9,-9 L-15,-8",
-    "M0,-1 L-11,-3 L-18,-1",
-    "M0,1 L-11,3 L-18,1",
-    "M0,2 L-9,9 L-15,8",
-    "M0,-2 L9,-9 L15,-8",
-    "M0,-1 L11,-3 L18,-1",
-    "M0,1 L11,3 L18,1",
-    "M0,2 L9,9 L15,8",
-  ];
-
-  return (
-    <g>
-      {legs.map((d, i) => (
-        <path
-          key={i}
-          d={d}
-          fill="none"
-          stroke="#22c550"
-          strokeWidth="1.4"
-          strokeLinecap="round"
-          className="spider-leg"
-          style={{ animationDelay: `${(i % 4) * 0.12}s` }}
-        />
-      ))}
-      <ellipse cx="0" cy="4" rx="4.5" ry="5.5" fill="#22c550" />
-      <circle cx="0" cy="-4" r="3" fill="#22c550" />
-    </g>
   );
 }
 

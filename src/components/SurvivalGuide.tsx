@@ -1,6 +1,3 @@
-import { DoodleField } from "@/components/doodles/DoodleField";
-import { BatIcon, SnakeIcon, CobwebIcon, TombstoneIcon } from "@/components/doodles/icons";
-
 const tips: { title: string; detail: string }[] = [
   {
     title: "Travel in groups.",
@@ -31,17 +28,9 @@ export function SurvivalGuide() {
   return (
     <section
       id="survival-guide"
-      className="relative w-full px-6 py-[80px] md:px-10"
+      className="w-full px-6 py-[80px] md:px-10"
     >
-      <DoodleField
-        items={[
-          { Icon: CobwebIcon, top: "0%", left: "-1%", size: 80, opacity: 0.4, rotate: 90 },
-          { Icon: SnakeIcon, top: "40%", right: "2%", size: 50, rotate: 200, flip: true },
-          { Icon: BatIcon, top: "80%", left: "6%", size: 28, rotate: -8 },
-          { Icon: TombstoneIcon, top: "92%", right: "8%", size: 26 },
-        ]}
-      />
-      <div className="relative mx-auto flex w-full max-w-[1200px] flex-col items-center">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center">
         <span className="rounded-full border border-graphite px-3 py-[3px] text-[12px] font-medium text-fog">
           100% Satire
         </span>

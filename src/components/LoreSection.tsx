@@ -1,6 +1,3 @@
-import { DoodleField } from "@/components/doodles/DoodleField";
-import { BatIcon, SnakeIcon, CobwebIcon } from "@/components/doodles/icons";
-
 const stats: { label: string; detail: string }[] = [
   {
     label: "Species",
@@ -61,16 +58,8 @@ const timeline: { title: string; detail: string }[] = [
 
 export function LoreSection() {
   return (
-    <section id="lore" className="relative w-full px-6 py-[80px] md:px-10">
-      <DoodleField
-        items={[
-          { Icon: CobwebIcon, top: "-1%", right: "-1%", size: 90, opacity: 0.4 },
-          { Icon: BatIcon, top: "6%", left: "3%", size: 40, rotate: -12 },
-          { Icon: SnakeIcon, top: "88%", left: "4%", size: 60, rotate: -15 },
-          { Icon: BatIcon, top: "55%", right: "5%", size: 30, rotate: 18, flip: true },
-        ]}
-      />
-      <div className="relative mx-auto flex w-full max-w-[1200px] flex-col gap-[60px]">
+    <section id="lore" className="w-full px-6 py-[80px] md:px-10">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-[60px]">
         <div className="mx-auto max-w-[720px] text-center">
           <h2 className="text-heading-sm font-light text-paper-white md:text-heading">
             Origin Story
