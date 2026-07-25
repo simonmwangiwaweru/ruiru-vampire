@@ -18,7 +18,7 @@ export function RecIndicator() {
   }, []);
 
   return (
-    <div className="pointer-events-none absolute left-4 top-[70px] z-10 flex items-center gap-[6px] font-cctv text-[11px] text-carbon/60 md:left-8">
+    <div className="pointer-events-none absolute left-4 top-[70px] z-20 flex items-center gap-[6px] font-cctv text-[11px] text-bone/80 md:left-8">
       <span className="h-2 w-2 rounded-full bg-[#e5484d] rec-dot" />
       REC {time || "--:--:--"}
     </div>
