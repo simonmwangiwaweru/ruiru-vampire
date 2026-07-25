@@ -5,12 +5,28 @@ import MouseTrail from "../utils/MouseTrail";
 import FluidSim from "../postprocessing/FluidSim";
 import PostProcessing from "../postprocessing/PostProcessing";
 
+// The fluid sim is a soft, blurry mask — it doesn't need native display
+// resolution. Sampling/writing a full-screen×devicePixelRatio render target
+// 5x per pixel every frame (as the darken-blend shader does) is the single
+// biggest cost in this pipeline on high-DPI displays. Cap its resolution
+// independently of the main render size.
+const FLUID_SIM_MAX_DIM = 640;
+
+function getFluidSimSize(width, height) {
+	const scale = Math.min(1, FLUID_SIM_MAX_DIM / Math.max(width, height));
+	return {
+		width: Math.max(1, Math.round(width * scale)),
+		height: Math.max(1, Math.round(height * scale)),
+	};
+}
+
 class Three {
 	constructor(container) {
 		this.container = container;
 		this.clock = new THREE.Clock();
 		this._raf = null;
 		this._disposed = false;
+		this._paused = false;
 	}
 
 	async run() {
@@ -27,9 +43,10 @@ class Three {
 	#setup() {
 		const { width, height } = this.context.getFullScreenDimensions();
 		const pr = this.context.pixelRatio;
+		const fluidSize = getFluidSimSize(width * pr, height * pr);
 		this.scene = new Scene(this.context, this.container);
-		this.mouseTrail = new MouseTrail(width * pr, height * pr);
-		this.fluidSim = new FluidSim(width * pr, height * pr);
+		this.mouseTrail = new MouseTrail(fluidSize.width, fluidSize.height);
+		this.fluidSim = new FluidSim(fluidSize.width, fluidSize.height);
 
 		this.postProcessing = new PostProcessing(
 			this.context.renderer,
@@ -40,8 +57,19 @@ class Three {
 		);
 	}
 
+	pause() {
+		this._paused = true;
+	}
+
+	resume() {
+		if (!this._paused || this._disposed) return;
+		this._paused = false;
+		this.clock.getDelta(); // discard time elapsed while paused
+		this.#animate();
+	}
+
 	#animate() {
-		if (this._disposed) return;
+		if (this._disposed || this._paused) return;
 
 		const delta = this.clock.getDelta();
 
@@ -68,10 +96,11 @@ class Three {
 	#onResize() {
 		const { width, height } = this.context.getFullScreenDimensions();
 		const pr = this.context.pixelRatio;
+		const fluidSize = getFluidSimSize(width * pr, height * pr);
 
 		this.context.onResize(width, height);
 		this.scene.onResize(width, height);
-		this.fluidSim.onResize(width * pr, height * pr);
+		this.fluidSim.onResize(fluidSize.width, fluidSize.height);
 	}
 
 	dispose() {

@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react";
 type ThreeInstance = {
   run: () => Promise<void>;
   dispose: () => void;
+  pause: () => void;
+  resume: () => void;
   scene: { ready: Promise<void> };
 };
 
@@ -66,6 +68,7 @@ export function ThreeSkullHero() {
   useEffect(() => {
     let cancelled = false;
     let instance: ThreeInstance | null = null;
+    let visibilityObserver: IntersectionObserver | null = null;
 
     if (!hasHardwareAcceleration()) {
       setUnsupported(true);
@@ -80,6 +83,20 @@ export function ThreeSkullHero() {
         instance = new Three(containerRef.current) as unknown as ThreeInstance;
         await instance.run();
         if (cancelled) return;
+
+        // The render loop is heavy (dual scenes, fluid sim, bloom) and runs
+        // continuously regardless of scroll position. Pause it the moment
+        // the hero leaves the viewport so it stops competing with scroll/
+        // other interaction for the main thread, and resume when it's back.
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) instance?.resume();
+            else instance?.pause();
+          },
+          { threshold: 0 }
+        );
+        if (containerRef.current) observer.observe(containerRef.current);
+        visibilityObserver = observer;
 
         // The scene renders (fog/bloom/grain) before the GLTF models finish
         // decoding. Don't leave the loading label stuck forever on a slow
@@ -98,6 +115,7 @@ export function ThreeSkullHero() {
 
     return () => {
       cancelled = true;
+      visibilityObserver?.disconnect();
       instance?.dispose();
     };
   }, []);

@@ -5,7 +5,7 @@ class WebGPUContext {
 		this.container = container;
 		this.renderer = null;
 		this.canvas = null;
-		this.pixelRatio = Math.min(window.devicePixelRatio, 2.0);
+		this.pixelRatio = Math.min(window.devicePixelRatio, 1.5);
 	}
 
 	async init() {
@@ -43,7 +43,7 @@ class WebGPUContext {
 	}
 
 	onResize(width, height) {
-		this.pixelRatio = Math.min(window.devicePixelRatio, 2);
+		this.pixelRatio = Math.min(window.devicePixelRatio, 1.5);
 		this.renderer.setSize(width, height);
 		this.renderer.setPixelRatio(this.pixelRatio);
 	}
