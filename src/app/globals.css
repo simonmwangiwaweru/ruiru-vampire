@@ -57,3 +57,23 @@ body {
   font-family: var(--font-neue);
   font-weight: 400;
 }
+
+.spider-leg {
+  transform-origin: 0px 0px;
+  animation: spider-leg-wiggle 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes spider-leg-wiggle {
+  from {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(4deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spider-leg {
+    animation: none;
+  }
+}

@@ -1,67 +1,7 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-
 export function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const pathRef = useRef<SVGPathElement>(null);
-  const ballRef = useRef<SVGCircleElement>(null);
-
-  useEffect(() => {
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    const path = pathRef.current;
-    const ball = ballRef.current;
-    if (!path || !ball) return;
-
-    const pathLength = path.getTotalLength();
-
-    if (reduceMotion) {
-      const mid = path.getPointAtLength(pathLength * 0.5);
-      ball.setAttribute("cx", String(mid.x));
-      ball.setAttribute("cy", String(mid.y));
-      return;
-    }
-
-    let ticking = false;
-
-    const update = () => {
-      ticking = false;
-      const section = sectionRef.current;
-      if (!section) return;
-
-      const rect = section.getBoundingClientRect();
-      const progress = clamp(-rect.top / (rect.height - window.innerHeight * 0.4), 0, 1);
-
-      const point = path.getPointAtLength(pathLength * progress);
-      ball.setAttribute("cx", String(point.x));
-      ball.setAttribute("cy", String(point.y));
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
   return (
-    <section
-      ref={sectionRef}
-      className="relative w-full overflow-hidden bg-chalk"
-    >
-      <GitothuaStreetscape pathRef={pathRef} ballRef={ballRef} />
+    <section className="relative w-full overflow-hidden bg-chalk">
+      <GitothuaStreetscape />
 
       <div className="relative mx-auto flex w-full max-w-[1200px] flex-col items-center px-6 pt-[60px] pb-[240px] text-center md:px-10 md:pb-[300px]">
         <span className="mb-[20px] rounded-full border border-graphite/30 px-3 py-[3px] text-[12px] font-medium text-carbon">
@@ -97,24 +37,14 @@ export function Hero() {
           Real injuries. Real fear. Everything after that: internet folklore.
         </p>
         <p className="mt-[8px] text-caption text-carbon/40">
-          Scroll — follow him through the storm drains of Gitothua.
+          Scroll — watch him crawl through the storm drains of Gitothua.
         </p>
       </div>
     </section>
   );
 }
 
-function clamp(value: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, value));
-}
-
-function GitothuaStreetscape({
-  pathRef,
-  ballRef,
-}: {
-  pathRef: React.RefObject<SVGPathElement | null>;
-  ballRef: React.RefObject<SVGCircleElement | null>;
-}) {
+function GitothuaStreetscape() {
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[200px] w-full md:h-[260px]">
       <svg
@@ -123,20 +53,6 @@ function GitothuaStreetscape({
         className="h-full w-full"
         aria-hidden="true"
       >
-        <defs>
-          <linearGradient id="fog" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#e2e8f0" stopOpacity="0" />
-            <stop offset="100%" stopColor="#c1c5c8" stopOpacity="0.9" />
-          </linearGradient>
-          <filter id="glow" x="-300%" y="-300%" width="700%" height="700%">
-            <feGaussianBlur stdDeviation="7" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-
         {/* moon */}
         <circle
           cx="1080"
@@ -192,13 +108,7 @@ function GitothuaStreetscape({
           <circle cx="960" cy="235" r="4" />
         </g>
 
-        {/* the storm drain the vampire uses to vanish — the single moving accent */}
-        <path
-          ref={pathRef}
-          d="M20,150 C140,120 230,170 360,144 S560,110 660,150 S900,172 1000,134 S1140,110 1180,140"
-          fill="none"
-          stroke="none"
-        />
+        {/* the storm drain the vampire uses to vanish */}
         <path
           d="M20,150 C140,120 230,170 360,144 S560,110 660,150 S900,172 1000,134 S1140,110 1180,140"
           fill="none"
@@ -222,14 +132,10 @@ function GitothuaStreetscape({
           <circle cx="1000" cy="134" r="13" />
         </g>
 
-        <circle
-          ref={ballRef}
-          r="10"
-          fill="#22c550"
-          filter="url(#glow)"
-          data-ball
-        />
-
+        <linearGradient id="fog" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#e2e8f0" stopOpacity="0" />
+          <stop offset="100%" stopColor="#c1c5c8" stopOpacity="0.9" />
+        </linearGradient>
         <rect x="0" y="190" width="1200" height="70" fill="url(#fog)" />
       </svg>
     </div>
