@@ -97,7 +97,7 @@ export function Hero() {
           Real injuries. Real fear. Everything after that: internet folklore.
         </p>
         <p className="mt-[8px] text-caption text-carbon/40">
-          Scroll — follow the sighting through Gitothua.
+          Scroll — follow him through the storm drains of Gitothua.
         </p>
       </div>
     </section>
@@ -137,48 +137,98 @@ function GitothuaStreetscape({
           </filter>
         </defs>
 
-        <circle cx="1040" cy="40" r="30" fill="#89898d" opacity="0.35" />
-
-        <g fill="#232323" opacity="0.55">
-          <rect x="40" y="120" width="120" height="140" />
-          <rect x="170" y="90" width="90" height="170" />
-          <rect x="270" y="140" width="140" height="120" />
-          <rect x="860" y="110" width="110" height="150" />
-          <rect x="980" y="80" width="95" height="180" />
-          <rect x="1085" y="130" width="115" height="130" />
-        </g>
-
-        <g fill="#08090b">
-          <rect x="380" y="60" width="150" height="200" />
-          <rect x="540" y="40" width="130" height="220" />
-          <rect x="680" y="70" width="160" height="190" />
-        </g>
-
-        <g fill="#c1c5c8" opacity="0.5">
-          <rect x="400" y="90" width="14" height="18" />
-          <rect x="430" y="90" width="14" height="18" />
-          <rect x="400" y="130" width="14" height="18" />
-          <rect x="560" y="70" width="14" height="18" />
-          <rect x="590" y="70" width="14" height="18" />
-          <rect x="560" y="110" width="14" height="18" />
-          <rect x="590" y="150" width="14" height="18" />
-          <rect x="700" y="100" width="14" height="18" />
-          <rect x="730" y="100" width="14" height="18" />
-        </g>
-
-        {/* The vampire's path through Gitothua — the single moving accent */}
-        <path
-          ref={pathRef}
-          d="M 20,232 C 140,200 230,250 360,224 S 560,190 660,230 S 900,252 1000,214 S 1140,190 1180,220"
+        {/* moon */}
+        <circle
+          cx="1080"
+          cy="34"
+          r="22"
           fill="none"
           stroke="#89898d"
-          strokeOpacity="0.35"
-          strokeWidth="2"
-          strokeDasharray="2 8"
-          strokeLinecap="round"
+          strokeWidth="1.5"
+          opacity="0.6"
         />
 
-        <circle ref={ballRef} r="9" fill="#22c550" filter="url(#glow)" />
+        {/* hand-drawn hill ridgelines */}
+        <path
+          d="M0,55 Q150,25 300,50 T600,38 T900,55 T1200,42"
+          fill="none"
+          stroke="#89898d"
+          strokeWidth="1.5"
+          opacity="0.45"
+        />
+        <path
+          d="M0,95 Q200,62 400,90 T800,78 T1200,95"
+          fill="none"
+          stroke="#89898d"
+          strokeWidth="1.5"
+          opacity="0.55"
+        />
+        <path
+          d="M0,190 Q250,158 500,185 T1000,168 T1200,188"
+          fill="none"
+          stroke="#232323"
+          strokeWidth="1.5"
+          opacity="0.4"
+        />
+
+        {/* simple line-art rooftops among the hills */}
+        <g fill="none" stroke="#232323" strokeWidth="1.5" opacity="0.55">
+          <path d="M150,178 L172,150 L194,178" />
+          <path d="M172,150 L172,178" />
+          <path d="M860,182 L886,152 L912,182" />
+          <path d="M886,152 L886,182" />
+        </g>
+
+        {/* scattered rock/crystal accents */}
+        <g fill="none" stroke="#89898d" strokeWidth="1.5" opacity="0.5">
+          <path d="M60,208 L72,190 L86,208 Z" />
+          <path d="M500,220 L512,204 L526,220 Z" />
+          <path d="M1080,205 L1094,186 L1110,205 Z" />
+          <path d="M310,230 L320,218 L332,230 Z" />
+        </g>
+        <g fill="none" stroke="#c1c5c8" strokeWidth="1.5" opacity="0.6">
+          <circle cx="230" cy="215" r="4" />
+          <circle cx="760" cy="225" r="3" />
+          <circle cx="960" cy="235" r="4" />
+        </g>
+
+        {/* the storm drain the vampire uses to vanish — the single moving accent */}
+        <path
+          ref={pathRef}
+          d="M20,150 C140,120 230,170 360,144 S560,110 660,150 S900,172 1000,134 S1140,110 1180,140"
+          fill="none"
+          stroke="none"
+        />
+        <path
+          d="M20,150 C140,120 230,170 360,144 S560,110 660,150 S900,172 1000,134 S1140,110 1180,140"
+          fill="none"
+          stroke="#89898d"
+          strokeWidth="22"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          opacity="0.9"
+        />
+        <path
+          d="M20,150 C140,120 230,170 360,144 S560,110 660,150 S900,172 1000,134 S1140,110 1180,140"
+          fill="none"
+          stroke="#dddddd"
+          strokeWidth="16"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <g fill="#c1c5c8" stroke="#89898d" strokeWidth="1.5">
+          <circle cx="360" cy="144" r="13" />
+          <circle cx="660" cy="150" r="13" />
+          <circle cx="1000" cy="134" r="13" />
+        </g>
+
+        <circle
+          ref={ballRef}
+          r="10"
+          fill="#22c550"
+          filter="url(#glow)"
+          data-ball
+        />
 
         <rect x="0" y="190" width="1200" height="70" fill="url(#fog)" />
       </svg>
