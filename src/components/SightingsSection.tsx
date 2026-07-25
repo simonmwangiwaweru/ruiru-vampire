@@ -1,3 +1,6 @@
+import { DoodleField } from "@/components/doodles/DoodleField";
+import { BatIcon, SnakeIcon } from "@/components/doodles/icons";
+
 const pins = [
   { x: "28%", y: "40%" },
   { x: "52%", y: "62%" },
@@ -7,8 +10,15 @@ const pins = [
 
 export function SightingsSection() {
   return (
-    <section id="sightings" className="w-full px-6 py-[80px] md:px-10">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center">
+    <section id="sightings" className="relative w-full px-6 py-[80px] md:px-10">
+      <DoodleField
+        items={[
+          { Icon: BatIcon, top: "3%", right: "4%", size: 34, rotate: -6 },
+          { Icon: SnakeIcon, top: "35%", left: "1%", size: 55, rotate: -25 },
+          { Icon: BatIcon, top: "90%", right: "10%", size: 26, rotate: 20, flip: true },
+        ]}
+      />
+      <div className="relative mx-auto flex w-full max-w-[1200px] flex-col items-center">
         <h2 className="text-center text-heading-sm font-light text-paper-white md:text-heading">
           Where He&rsquo;s Been Seen
         </h2>

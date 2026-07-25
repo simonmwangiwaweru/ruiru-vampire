@@ -87,25 +87,72 @@ function GitothuaStreetscape() {
           opacity="0.4"
         />
 
-        {/* simple line-art rooftops among the hills */}
-        <g fill="none" stroke="#232323" strokeWidth="1.5" opacity="0.55">
-          <path d="M150,178 L172,150 L194,178" />
-          <path d="M172,150 L172,178" />
-          <path d="M860,182 L886,152 L912,182" />
-          <path d="M886,152 L886,182" />
+        {/* a lone bare, gnarled tree */}
+        <g fill="none" stroke="#232323" strokeWidth="1.5" opacity="0.6">
+          <path d="M300,220 L296,150" />
+          <path d="M296,178 L276,158 M296,178 L280,190" />
+          <path d="M296,158 L308,138 M296,158 L316,166" />
+          <path d="M296,150 L286,128 M296,150 L302,124" />
         </g>
 
-        {/* scattered rock/crystal accents */}
-        <g fill="none" stroke="#89898d" strokeWidth="1.5" opacity="0.5">
-          <path d="M60,208 L72,190 L86,208 Z" />
-          <path d="M500,220 L512,204 L526,220 Z" />
-          <path d="M1080,205 L1094,186 L1110,205 Z" />
-          <path d="M310,230 L320,218 L332,230 Z" />
+        {/* the haunted mansion on the hill — Hotel Transylvania silhouette */}
+        <g>
+          {/* main hall + crenellated wing */}
+          <path
+            d="M540,190 L540,110 L595,70 L650,110 L650,190 Z"
+            fill="#08090b"
+          />
+          <path
+            d="M650,190 L650,140 L662,140 L662,128 L674,128 L674,140 L686,140 L686,128 L698,128 L698,140 L710,140 L710,190 Z"
+            fill="#08090b"
+          />
+
+          {/* turret with conical roof */}
+          <rect x="500" y="86" width="28" height="104" fill="#08090b" />
+          <path d="M496,86 L514,44 L532,86 Z" fill="#08090b" />
+          <line
+            x1="514"
+            y1="44"
+            x2="514"
+            y2="32"
+            stroke="#232323"
+            strokeWidth="1.5"
+          />
+          <circle cx="514" cy="30" r="2" fill="#232323" />
+
+          {/* arched windows */}
+          <g fill="none" stroke="#89898d" strokeWidth="1.5" opacity="0.7">
+            <path d="M563,140 a7,7 0 0 1 14,0 v20 h-14 Z" />
+            <path d="M613,150 a6,6 0 0 1 12,0 v16 h-12 Z" />
+            <path d="M509,120 a5,5 0 0 1 10,0 v14 h-10 Z" />
+          </g>
+
+          {/* crooked entrance door */}
+          <path
+            d="M582,190 L582,168 a8,8 0 0 1 16,0 L598,190 Z"
+            fill="none"
+            stroke="#89898d"
+            strokeWidth="1.5"
+            opacity="0.7"
+          />
         </g>
-        <g fill="none" stroke="#c1c5c8" strokeWidth="1.5" opacity="0.6">
-          <circle cx="230" cy="215" r="4" />
-          <circle cx="760" cy="225" r="3" />
-          <circle cx="960" cy="235" r="4" />
+
+        {/* bats circling the mansion */}
+        <g fill="none" stroke="#c1c5c8" strokeWidth="1.6" opacity="0.7">
+          <path d="M470,64 q6,-8 12,0 q6,-8 12,0" />
+          <path d="M700,50 q5,-7 10,0 q5,-7 10,0" />
+          <path d="M420,100 q4,-6 8,0 q4,-6 8,0" />
+        </g>
+
+        {/* tombstones scattered on the ground */}
+        <g fill="#232323" opacity="0.55">
+          <path d="M368,230 L368,210 a8,8 0 0 1 16,0 L384,230 Z" />
+          <path d="M760,235 L760,218 a7,7 0 0 1 14,0 L774,235 Z" />
+          <path d="M1080,225 L1080,206 a8,8 0 0 1 16,0 L1096,225 Z" />
+        </g>
+        <g stroke="#08090b" strokeWidth="1.5" opacity="0.7">
+          <path d="M372,220 L380,220 M376,215 L376,225" />
+          <path d="M764,225 L772,225" />
         </g>
 
         {/* the storm drain the vampire uses to vanish */}

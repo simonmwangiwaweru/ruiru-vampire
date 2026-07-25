@@ -1,3 +1,6 @@
+import { DoodleField } from "@/components/doodles/DoodleField";
+import { BatIcon, SnakeIcon } from "@/components/doodles/icons";
+
 const faqs: { q: string; a: string }[] = [
   {
     q: "Is the Ruiru Vampire a real vampire?",
@@ -19,8 +22,14 @@ const faqs: { q: string; a: string }[] = [
 
 export function FaqSection() {
   return (
-    <section id="faq" className="w-full px-6 py-[80px] md:px-10">
-      <div className="mx-auto flex w-full max-w-[720px] flex-col items-center">
+    <section id="faq" className="relative w-full px-6 py-[80px] md:px-10">
+      <DoodleField
+        items={[
+          { Icon: BatIcon, top: "2%", right: "8%", size: 30, rotate: 8 },
+          { Icon: SnakeIcon, top: "88%", left: "3%", size: 55, rotate: -10 },
+        ]}
+      />
+      <div className="relative mx-auto flex w-full max-w-[720px] flex-col items-center">
         <h2 className="text-center text-heading-sm font-light text-paper-white md:text-heading">
           FAQ
         </h2>

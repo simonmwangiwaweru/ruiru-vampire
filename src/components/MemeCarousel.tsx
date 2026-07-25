@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef } from "react";
+import { DoodleField } from "@/components/doodles/DoodleField";
+import { BatIcon } from "@/components/doodles/icons";
 
 const memes: { quote: string; handle: string; context: string }[] = [
   {
@@ -40,8 +42,14 @@ export function MemeCarousel() {
   };
 
   return (
-    <section className="w-full px-6 py-[80px] md:px-10">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center">
+    <section className="relative w-full px-6 py-[80px] md:px-10">
+      <DoodleField
+        items={[
+          { Icon: BatIcon, top: "5%", left: "5%", size: 30, rotate: -10 },
+          { Icon: BatIcon, top: "70%", right: "3%", size: 36, rotate: 12, flip: true },
+        ]}
+      />
+      <div className="relative mx-auto flex w-full max-w-[1200px] flex-col items-center">
         <h2 className="text-center text-heading-sm font-light text-paper-white md:text-heading">
           Best Reactions From Kenyans on Twitter
         </h2>
