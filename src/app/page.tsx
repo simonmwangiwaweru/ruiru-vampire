@@ -6,6 +6,7 @@ import { MemeCarousel } from "@/components/MemeCarousel";
 import { SurvivalGuide } from "@/components/SurvivalGuide";
 import { FaqSection } from "@/components/FaqSection";
 import { Footer } from "@/components/Footer";
+import { MotionDetect } from "@/components/MotionDetect";
 
 export default function Home() {
   return (
@@ -13,11 +14,21 @@ export default function Home() {
       <NavBar />
       <main className="flex flex-1 flex-col">
         <Hero />
-        <LoreSection />
-        <SightingsSection />
-        <MemeCarousel />
-        <SurvivalGuide />
-        <FaqSection />
+        <MotionDetect>
+          <LoreSection />
+        </MotionDetect>
+        <MotionDetect>
+          <SightingsSection />
+        </MotionDetect>
+        <MotionDetect>
+          <MemeCarousel />
+        </MotionDetect>
+        <MotionDetect>
+          <SurvivalGuide />
+        </MotionDetect>
+        <MotionDetect>
+          <FaqSection />
+        </MotionDetect>
       </main>
       <Footer />
     </div>

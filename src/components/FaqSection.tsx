@@ -1,3 +1,5 @@
+import { Redacted } from "@/components/Redacted";
+
 const faqs: { q: string; a: string }[] = [
   {
     q: "Is the Ruiru Vampire a real vampire?",
@@ -34,7 +36,9 @@ export function FaqSection() {
               <p className="text-[16px] font-medium text-paper-white">
                 {item.q}
               </p>
-              <p className="mt-[8px] text-body text-fog">{item.a}</p>
+              <p className="mt-[8px] text-body text-fog">
+                <Redacted>{item.a}</Redacted>
+              </p>
             </div>
           ))}
         </div>

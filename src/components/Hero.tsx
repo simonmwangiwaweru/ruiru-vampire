@@ -1,7 +1,16 @@
+import { Flashlight } from "@/components/Flashlight";
+import { RecIndicator } from "@/components/RecIndicator";
+
 export function Hero() {
   return (
     <section className="relative w-full overflow-hidden bg-chalk">
-      <GitothuaStreetscape />
+      <div className="absolute inset-x-0 bottom-0 h-[200px] w-full md:h-[260px]">
+        <Flashlight className="pointer-events-auto h-full w-full">
+          <GitothuaStreetscape />
+        </Flashlight>
+      </div>
+
+      <RecIndicator />
 
       <div className="relative mx-auto flex w-full max-w-[1200px] flex-col items-center px-6 pt-[60px] pb-[240px] text-center md:px-10 md:pb-[300px]">
         <span className="mb-[20px] rounded-full border border-graphite/30 px-3 py-[3px] text-[12px] font-medium text-carbon">
@@ -37,7 +46,8 @@ export function Hero() {
           Real injuries. Real fear. Everything after that: internet folklore.
         </p>
         <p className="mt-[8px] text-caption text-carbon/40">
-          Scroll — follow him through the storm drains of Gitothua.
+          Scroll — follow him through the storm drains of Gitothua. Move your
+          cursor over the feed below.
         </p>
       </div>
     </section>
@@ -46,7 +56,7 @@ export function Hero() {
 
 function GitothuaStreetscape() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[200px] w-full md:h-[260px]">
+    <>
       <svg
         viewBox="0 0 1200 260"
         preserveAspectRatio="xMidYMax slice"
@@ -138,6 +148,6 @@ function GitothuaStreetscape() {
         </linearGradient>
         <rect x="0" y="190" width="1200" height="70" fill="url(#fog)" />
       </svg>
-    </div>
+    </>
   );
 }
