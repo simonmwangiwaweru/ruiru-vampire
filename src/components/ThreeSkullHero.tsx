@@ -8,14 +8,16 @@ type ThreeInstance = {
   scene: { ready: Promise<void> };
 };
 
+// Only unambiguous, well-known *software* rasterizer identifiers. Real GPU
+// vendor strings (NVIDIA/AMD/Intel/Apple, even reported through ANGLE's
+// Vulkan backend) must never match here — a false positive silently disables
+// the whole effect on real hardware, which is worse than the risk it guards
+// against.
 const BAD_RENDERER_SIGNATURES = [
   "swiftshader",
   "llvmpipe",
-  "software",
-  "basic render",
-  "microsoft basic",
-  "google, vulkan",
-  "vmware",
+  "software rasterizer",
+  "microsoft basic render",
 ];
 
 /**
@@ -31,16 +33,27 @@ function hasHardwareAcceleration() {
     const canvas = document.createElement("canvas");
     const gl = (canvas.getContext("webgl2") ||
       canvas.getContext("webgl")) as WebGLRenderingContext | null;
-    if (!gl) return false;
+    if (!gl) {
+      console.warn("ThreeSkullHero: no WebGL context available at all.");
+      return false;
+    }
 
     const info = gl.getExtension("WEBGL_debug_renderer_info");
     const renderer = info
       ? gl.getParameter(info.UNMASKED_RENDERER_WEBGL)
       : gl.getParameter(gl.RENDERER);
     const str = String(renderer).toLowerCase();
+    const isBad = BAD_RENDERER_SIGNATURES.some((sig) => str.includes(sig));
 
-    return !BAD_RENDERER_SIGNATURES.some((sig) => str.includes(sig));
-  } catch {
+    console.log(
+      `ThreeSkullHero: detected renderer "${renderer}" — treating as ${
+        isBad ? "SOFTWARE (scene disabled)" : "hardware-accelerated (scene enabled)"
+      }`
+    );
+
+    return !isBad;
+  } catch (err) {
+    console.warn("ThreeSkullHero: renderer probe threw, assuming no acceleration.", err);
     return false;
   }
 }
